@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="tl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Happy Valentines Day</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;900&display=swap');
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        /* --- Elegant Landing Button Container --- */
+        .btn-wrapper {
+            text-align: center;
+            z-index: 10;
+            transition: opacity 0.8s ease;
+        }
+
+        #revealBtn {
+            padding: 20px 50px;
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: #fff;
+            background: transparent;
+            border: 2px solid #fff;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            position: relative;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .click-note {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.3; }
+            50% { opacity: 1; }
+            100% { opacity: 0.3; }
+        }
+
+        #revealBtn:hover {
+            background: #fff;
+            color: #000;
+            box-shadow: 0 0 30px rgba(255,255,255,0.6);
+            transform: scale(1.05);
+        }
+
+        /* --- Typography Portrait Core --- */
+        .typography-portrait {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-image: url('1.jpg'); 
+            background-size: 100% 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: rgba(255, 255, 255, 0.03);
+            
+            font-weight: 900;
+            word-break: break-all;
+            text-align: justify;
+            text-transform: uppercase;
+            user-select: none;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .typography-portrait {
+            font-size: 10px;
+            line-height: 0.85;
+        }
+
+        /* --- Animation Activation --- */
+        .active {
+            opacity: 1;
+            pointer-events: auto;
+            animation: assemble 5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+
+        @keyframes assemble {
+            0% {
+                letter-spacing: 40px;
+                filter: brightness(3) contrast(4) blur(20px);
+                transform: scale(1.3);
+            }
+            100% {
+                letter-spacing: -0.8px;
+                filter: brightness(1.2) contrast(1.5) blur(0px);
+                transform: scale(1);
+            }
+        }
+
+        /* --- Mobile Optimization --- */
+        @media only screen and (max-width: 600px) {
+            #revealBtn { font-size: 1.1rem; padding: 15px 30px; width: 80vw; margin: 0 auto; }
+            .typography-portrait { font-size: 5px; line-height: 0.8; }
+            .active { animation: assemble-mobile 5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
+            @keyframes assemble-mobile {
+                0% { letter-spacing: 15px; filter: blur(10px); transform: scale(1.1); }
+                100% { letter-spacing: -0.4px; filter: blur(0px); transform: scale(1); }
+            }
+        }
+
+        .vignette {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, transparent 30%, black 100%);
+            pointer-events: none;
+            z-index: 2;
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="valentinesMusic" loop>
+        <source src="1.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <div class="btn-wrapper" id="mainLanding">
+        <button id="revealBtn">HAPPY VALENTINES DAY</button>
+        <div class="click-note">Click here to reveal</div>
+    </div>
+
+    <div class="vignette"></div>
+    <div class="typography-portrait" id="textContainer"></div>
+
+    <script>
+        const container = document.getElementById('textContainer');
+        const landing = document.getElementById('mainLanding');
+        const btn = document.getElementById('revealBtn');
+        const audio = document.getElementById('valentinesMusic');
+        
+        const words = [
+            "MAHALKITA", "IKAWLANG", "SINTA", "TAHANAN", "TAMSKO", "SINAG", "NGITI", "MUNDO", 
+            "PAGIBIG", "WAGAS", "PAHINGA", "BINIBINI", "TAMSKO", "GILIW", "DALISAY", "TINATANGI", 
+            "PARALUMAN", "KISLAP", "TAMSKO", "BITUIN", "HIMIG", "YAKAP", "HALIK", "BIYAYA", "TAMSKO", "PAYAPA", 
+            "LIGAYA", "HARANA", "SULYAP", "KASAMA", "HABAMBUHAY", "PANALANGIN", "TAMSKO", 
+            "TAMSKO", "TADHANA", "PANGAKO", "TAMSKO", "ALAPAAP", "TAMSKO", "PABORITO", "GUNITA"
+        ];
+
+        function fillText() {
+            let content = "";
+            const isMobile = window.innerWidth <= 600;
+            const densityDivider = isMobile ? 8 : 22; 
+            const totalChars = (window.innerWidth * window.innerHeight) / densityDivider; 
+            
+            while (content.length < totalChars) {
+                let randomWord = words[Math.floor(Math.random() * words.length)];
+                content += randomWord + " ";
+            }
+            container.innerText = content;
+        }
+
+        btn.addEventListener('click', () => {
+            // Dito mag-i-start ang tugtog pagka-click ng button
+            audio.play();
+
+            landing.style.opacity = '0';
+            setTimeout(() => {
+                landing.style.display = 'none';
+                container.classList.add('active');
+            }, 800);
+        });
+
+        fillText();
+        window.addEventListener('resize', fillText);
+    </script>
+</body>
+</html>
